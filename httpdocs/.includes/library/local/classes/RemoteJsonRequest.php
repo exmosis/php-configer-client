@@ -18,13 +18,14 @@ class RemoteJsonRequest {
     public function assembleUri() {
         return $this->host . '/' . $this->uri_path;
     }
-    
+  
+    /** Currently blindly decodes result as json. */  
     public function go() {
         $request_uri = $this->assembleUri();
         $this->response = \Httpful\Request::get($request_uri)->send();
         $this->body = $this->response->body;
         
-        return $this->body;
+        return json_decode($this->body);
     }
     
     
