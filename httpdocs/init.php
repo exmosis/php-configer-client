@@ -1,11 +1,13 @@
 <?php
 
+require_once('scripts/init.php');
+
 $remote_server = new RemoteConfigerServerConnection(
-                            '127.0.0.1',
+                            'configer.vm',
                             'test',
                             'abc'
 );
 $remote_request = $remote_server->createJsonRequest('confirm_access');
-
+echo 'Making call';
 print_r($remote_request->go());
 
