@@ -2,10 +2,23 @@
 
 require_once('scripts/init.php');
 
+if (! isset($_GET['host'])) {
+    echo 'ERROR: No host set in URL';
+    exit;
+}
+
+if (! isset($_GET['token'])) {
+    echo 'ERROR: No token set in URL';
+    exit;
+}
+
+$host = $_GET['host'];
+$token = $_GET['token'];
+
 $remote_server = new RemoteConfigerServerConnection(
                             'configer.vm',
-                            'test',
-                            'abc'
+                            $host,
+                            $token
 );
 $remote_request = $remote_server->createJsonRequest('confirm_access');
 try {
@@ -26,3 +39,14 @@ try {
 } 
 
 print_r($response);
+
+$config = new ConfigerClientConfig(
+    array(
+        'host' => $host,
+        'token' => $token
+    )
+);
+
+$config_file = new ConfigerClientConfigFile();
+$config_file->saveConfig($config);
+
