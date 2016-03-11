@@ -1,0 +1,9 @@
+php_value include_path "/var/www/vhosts/php-configer-client/httpdocs/.includes"
+php_value display_errors 1
+
+RewriteEngine on
+RewriteBase /
+
+# MAKE SURE EVERY REQUEST ENDS IN A /
+RewriteRule ^([^\.]+[^/])$ $1/
+
