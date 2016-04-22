@@ -2,8 +2,8 @@
 
 require_once('scripts/init.php');
 
-define('CFG_HOST', 'cfg_host');
-define('CFG_HOST_TOKEN', 'cfg_host_token');
+define('CFG_HOST', 'cfg_server_host');
+define('CFG_HOST_TOKEN', 'cfg_server_host_token');
 
 if (! isset($_GET[CFG_HOST])) {
     echo 'ERROR: No host set in URL';
@@ -15,12 +15,13 @@ if (! isset($_GET[CFG_HOST_TOKEN])) {
     exit;
 }
 
-$host = $_GET[CFG_HOST];
+$cfg_source_host = $_GET[CFG_HOST];
+$requesting_host = $_SERVER['HTTP_HOST'];
 $token = $_GET[CFG_HOST_TOKEN];
 
 $remote_server = new RemoteConfigerServerConnection(
-                            'configer.vm',
-                            $host,
+                            $cfg_source_host,
+                            $requesting_host,
                             $token
 );
 $remote_request = $remote_server->createJsonRequest('confirm_access');
@@ -45,7 +46,7 @@ echo json_encode($response);
 
 $config = new ConfigerClientConfig(
     array(
-        'host' => $host,
+        'host' => $cfg_source_host,
         'token' => $token
     )
 );
