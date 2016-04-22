@@ -61,7 +61,7 @@ class ConfigerClientConfigFile {
     private function getConfigFromFile() {
         $this->validateConfigFile();
         $file_contents = file_get_contents($this->dir_path . DIRECTORY_SEPARATOR . $this->file_name);
-        return json_decode($file_contents);
+        return json_decode($file_contents, true);
     }
     
     public function saveConfig(ConfigerClientConfig $config) {
