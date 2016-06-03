@@ -3,6 +3,8 @@
 require_once('library/external/httpful/httpful.phar');
 
 class RemoteJsonRequest {
+   
+    const REQUEST_CODE_OK = 200;
     
     protected $host;
     protected $uri_path;
@@ -19,13 +21,12 @@ class RemoteJsonRequest {
         return $this->host . '/' . $this->uri_path;
     }
   
-    /** Currently blindly decodes result as json. */  
     public function go() {
         $request_uri = $this->assembleUri();
         $this->response = \Httpful\Request::get($request_uri)->send();
         $this->body = $this->response->body;
         
-        return json_decode($this->body);
+        return $this->response;
     }
     
     

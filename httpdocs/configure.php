@@ -18,9 +18,11 @@ $remote_request = $remote_server->createJsonRequest('get_host_config');
 try {
     $response = $remote_request->go();
 
-    if (! $response->success) {
-        echo json_encode($response);
-        // quit with failure JSON
+    if ($response->code != RemoteJsonRequest::REQUEST_CODE_OK) {
+        echo json_encode(array(
+            'success' => false,
+            'errors' => $response->body
+        ));
         exit;
     }
 } catch (Httpful\Exception\ConnectionErrorException $e) {
@@ -32,4 +34,7 @@ try {
     exit;
 } 
 
-echo json_encode($response);
+echo json_encode(array(
+    'success' => true,
+    'body' => $response->body // body stored as JSON format string, not JSON object
+));
