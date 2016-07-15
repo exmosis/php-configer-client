@@ -3,7 +3,6 @@
 /**
  * An entire Host Config (basically a single file) which consists of 1 or more HostConfigSection objects.
  */
-
 class HostConfig {
     
     protected $host_config_sections;
