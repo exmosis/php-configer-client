@@ -15,6 +15,10 @@ class ConfigOption {
     
     public function __construct($key, $value = null, $be_quoted = true, $comment = null, $overridable = false) {
         $this->setKey($key);
+        $this->setValue($value);
+        $this->setBeQuoted($be_quoted);
+        $this->setComment($comment);
+        $this->setOverridable($overridable);
     }
     
     private function setKey($key) {
@@ -26,7 +30,7 @@ class ConfigOption {
     }
     
     public function setValue($value) {
-        $this->value;
+        $this->value = $value;
     }
     
     public function getValue() {
