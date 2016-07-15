@@ -38,10 +38,12 @@ class PhpHostConfigSectionWriter implements HostConfigSectionWriterInterface {
     
         $host_config_section = $this->getHostConfigSection();
     
-        $name = $ihost_config_section->getName();
-        $name = '/* ' . str_replace('*/', '* /', $name) . '*/';
+        $name = $host_config_section->getName();
+        $name = str_replace('*/', '* /', $name);
         
+        $content[] = '/*';
         $content[] = $name;
+        $content[] = '*/';
         $content[] = ''; // blank line
         
         $option_writer_class = $this->getConfigOptionWriterClass();

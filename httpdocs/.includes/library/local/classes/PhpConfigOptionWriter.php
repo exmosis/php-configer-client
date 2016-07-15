@@ -48,6 +48,9 @@ class PhpConfigOptionWriter implements ConfigOptionWriterInterface {
         }
         
         $content[] = $define_stmt;
+        
+        // add blank line
+        $content[] = '';
      
         return $content;
         
@@ -57,7 +60,7 @@ class PhpConfigOptionWriter implements ConfigOptionWriterInterface {
      * Helper function to add quotes
      */
     private function quoteValue($value) {
-        $value = "'" . str_replace("'", "\\'", $string) . "'";
+        $value = "'" . str_replace("'", "\\'", $value) . "'";
         return $value;
     }
     
@@ -67,7 +70,7 @@ class PhpConfigOptionWriter implements ConfigOptionWriterInterface {
     }
     
     private function optionalDefine($key, $define_stmt) {
-        $define_stmt = "if (! defined('" . $key . "'')) { " . $define_stmt . " }";
+        $define_stmt = "if (! defined('" . $key . "')) { " . $define_stmt . " }";
         return $define_stmt;
     }
     
