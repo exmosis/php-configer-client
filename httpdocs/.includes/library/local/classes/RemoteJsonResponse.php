@@ -3,6 +3,8 @@
 class RemoteJsonResponse {
 
     protected $success;
+	protected $code;
+	protected $body;
     protected $messages;
     protected $errors;
     
@@ -24,6 +26,25 @@ class RemoteJsonResponse {
         return $this->success;
     }
     
+	public function setCode($code) {
+		$this->code = $code;
+	}
+	
+	public function getCode() {
+		return $this->code;
+	}
+	
+	/**
+	 * @param Mixed $body Array or object for body?	
+	 */
+	public function setBody($body) {
+		$this->body = $body;
+	}
+	
+	public function getBody() {
+		return $this->body;
+	}
+	
     public function addMessage($message) {
         $this->messages[] = $message;
     }

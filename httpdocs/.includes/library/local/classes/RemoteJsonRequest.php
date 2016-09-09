@@ -9,9 +9,6 @@ class RemoteJsonRequest {
     protected $host;
     protected $uri_path;
     
-    protected $response;
-    protected $body;
-    
     public function __construct($host, $uri_path) {
         $this->host = $host;
         $this->uri_path = $uri_path;
@@ -21,12 +18,44 @@ class RemoteJsonRequest {
         return $this->host . '/' . $this->uri_path;
     }
   
+  	/**
+	 * @return RemoteJsonResponse object reflecting status, messages and errors of response from remote server
+	 */
     public function go() {
         $request_uri = $this->assembleUri();
-        $this->response = \Httpful\Request::get($request_uri)->send();
-        $this->body = $this->response->body;
-        
-        return $this->response;
+
+		$response = new RemoteJsonResponse();
+
+ 
+		try {
+
+	        $httpful_response = \Httpful\Request::get($request_uri)->send();
+			
+			$response->setCode($httpful_response->code);
+	        $response->setBody($httpful_response->body);
+
+			$response_obj = json_decode($httpful_response->body);
+			
+			$response->setToSuccess();
+			
+			if (isset($response_obj->messages)) {
+				foreach ($response_obj->messages as $message) {
+					$response->addMessage($message);
+				}
+			}
+
+			if (isset($response_obj->errors)) {
+				foreach ($response_obj->errors as $error) {
+					$response->addError($error);
+				}
+			}
+			
+		} catch (Exception $e) {
+			$response->setToFailure();
+			$response->addError($e->getMessage());
+		}
+		
+        return $response;
     }
     
     
