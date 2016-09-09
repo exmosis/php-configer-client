@@ -138,7 +138,7 @@ abstract class AbstractHostConfigWriter implements HostConfigWriterInterface {
         }
         
         $file = $this->getFullFile();
-        echo "\nWriting to $file\n";
+
         $fh = fopen($file, 'w');
         if ($fh === false) {
             throw new Exception("Couldn't open file for writing.");
