@@ -34,13 +34,16 @@ try {
     exit;
 } 
 
+/*
 echo json_encode(array(
     'success' => true,
     'body' => $response->body // body stored as JSON format string, not JSON object
 ));
+*/
 
 $body = json_decode($response->getBody(), true);
 
+$output_files = array();
 foreach ($body as $file_id => $file_config) {
     
     $file_info = $file_config['file_info'];
@@ -79,8 +82,16 @@ foreach ($body as $file_id => $file_config) {
                            );
         $file_writer->setOverWriteExistingFile(true);
                            
-        print_r($file_writer->getContent());
+        // print_r($file_writer->getContent());
         $file_writer->write();
     }
+	$output_files[] = $file_info['file_path'] . DIRECTORY_SEPARATOR . $file_info['file_name']; 
     
 }
+
+echo json_encode(
+	array(
+		'success' => true,
+		'files_written' => $output_files
+	)
+);
