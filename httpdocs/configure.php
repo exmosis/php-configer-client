@@ -44,6 +44,7 @@ echo json_encode(array(
 $body = json_decode($response->getBody(), true);
 
 $output_files = array();
+
 foreach ($body as $file_id => $file_config) {
     
     $file_info = $file_config['file_info'];
@@ -51,7 +52,7 @@ foreach ($body as $file_id => $file_config) {
     
     $host_config = new HostConfig();
     // Add dummy output section for now
-    $host_config_section = new HostConfigSection('config'); 
+    $host_config_section = new HostConfigSection('magic configer'); 
     $host_config_options = array();
     
     // Set up HostConfig values
@@ -85,6 +86,7 @@ foreach ($body as $file_id => $file_config) {
         // print_r($file_writer->getContent());
         $file_writer->write();
     }
+
 	$output_files[] = $file_info['file_path'] . DIRECTORY_SEPARATOR . $file_info['file_name']; 
     
 }
