@@ -3,7 +3,16 @@
 require_once('scripts/init.php');
 
 $client_config_file = new ConfigerClientConfigFile();
-$client_config = $client_config_file->getConfigerClientConfig();
+
+try {
+	$client_config = $client_config_file->getConfigerClientConfig();
+} catch (Exception $e) {
+	echo json_encode(array(
+		'success' => false,
+		'errors' => array( $e->getMessage() )
+	));
+	exit;
+}
 
 $cfg_source_host = $client_config->getConfigValue('host');
 $token = $client_config->getConfigValue('token');
