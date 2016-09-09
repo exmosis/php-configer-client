@@ -18,10 +18,10 @@ $remote_request = $remote_server->createJsonRequest('get_host_config');
 try {
     $response = $remote_request->go();
 
-    if ($response->code != RemoteJsonRequest::REQUEST_CODE_OK) {
+    if ($response->getCode() != RemoteJsonRequest::REQUEST_CODE_OK) {
         echo json_encode(array(
             'success' => false,
-            'errors' => $response->body
+            'errors' => $response->getErrors()
         ));
         exit;
     }
@@ -39,7 +39,7 @@ echo json_encode(array(
     'body' => $response->body // body stored as JSON format string, not JSON object
 ));
 
-$body = json_decode($response->body, true);
+$body = json_decode($response->getBody(), true);
 
 foreach ($body as $file_id => $file_config) {
     
