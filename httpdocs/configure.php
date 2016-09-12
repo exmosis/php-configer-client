@@ -1,11 +1,35 @@
 <?php
 
-require_once('scripts/init.php');
-
-$client_config_file = new ConfigerClientConfigFile();
+require_once(dirname(__FILE__) . DIRECTORY_SEPARATOR . '.includes/scripts/init.php');
 
 try {
+		
+	$config_file_dir = null;	
+	$config_file_name = null;
+	
+	$configer_client_config_file = $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . '.configer/configer_client.json';
+	
+	if (file_exists($configer_client_config_file)) {
+
+		// @TODO Replace this with something nicer/re-used, and with better error checking
+		$content = file_get_contents($configer_client_config_file);
+		$configer_client_config = json_decode($content, true);
+
+		if (isset($configer_client_config['config_file_dir']) &&
+		       isset($configer_client_config['config_file_name'])) {
+		       	
+			$config_file_dir = $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . $configer_client_config['config_file_dir'];
+			$config_file_name = $configer_client_config['config_file_name'];
+			$generated_files_base_dir = $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . $configer_client_config['generated_files_base_dir'];
+			
+		} else {
+			echo "Couldn't get client config"; 
+		}
+	}
+	
+	$client_config_file = new ConfigerClientConfigFile($config_file_name, $config_file_dir);
 	$client_config = $client_config_file->getConfigerClientConfig();
+
 } catch (Exception $e) {
 	echo json_encode(array(
 		'success' => false,
@@ -85,7 +109,7 @@ foreach ($body as $file_id => $file_config) {
     if ($file_info['file_type'] == 'php') {
         $file_writer = new PhpHostConfigWriter(
                                 $file_info['file_name'], 
-                                $file_info['file_path'], 
+                                $generated_files_base_dir . DIRECTORY_SEPARATOR . $file_info['file_path'], 
                                 $host_config,
                                 'PhpHostConfigSectionWriter', 
                                 'PhpConfigOptionWriter'
