@@ -67,7 +67,30 @@ $config = new ConfigerClientConfig(
 );
 
 try {
-	$config_file = new ConfigerClientConfigFile();
+		
+	$config_file_dir = null;	
+	$config_file_name = null;
+	
+	$configer_client_config_file = $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . '.configer/configer_client.json';
+	
+	if (file_exists($configer_client_config_file)) {
+
+		// @TODO Replace this with something nicer/re-used, and with better error checking
+		$content = file_get_contents($configer_client_config_file);
+		$configer_client_config = json_decode($content, true);
+
+		if (isset($configer_client_config['config_file_dir']) &&
+		       isset($configer_client_config['config_file_name'])) {
+		       	
+			$config_file_dir = $_SERVER['DOCUMENT_ROOT'] .DIRECTORY_SEPARATOR . $configer_client_config['config_file_dir'];
+			$config_file_name = $configer_client_config['config_file_name'];
+			
+		} else {
+			echo "Couldn't get client config"; 
+		}
+	}
+	
+	$config_file = new ConfigerClientConfigFile($config_file_name, $config_file_dir);
 	$config_file->saveConfig($config);
 } catch (Exception $e) {
 	echo json_encode(array(
