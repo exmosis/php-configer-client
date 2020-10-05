@@ -97,6 +97,7 @@ try {
 		'success' => false,
 		'errors' => array( $e->getMessage() )
 	));
+	exit;
 }
 
 echo json_encode(array(
