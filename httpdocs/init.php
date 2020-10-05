@@ -1,6 +1,6 @@
 <?php
 
-require_once('scripts/init.php');
+require_once(__DIR__ . '/.includes/scripts/init.php');
 
 /* Accepted GET params */
 
